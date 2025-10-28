@@ -4,23 +4,23 @@ using UnityEngine;
 [ExecuteInEditMode] 
 public class SphereTerrainComplete : MonoBehaviour
 {
-    [Header("»ù´¡²ÎÊı")]
+    [Header("åŸºç¡€å‚æ•°")]
     [Range(20, 150)] public int resolution = 60;
-    public float radius = 500f; // ÇòÌå°ë¾¶
-    [Range(5, 25)] public float height = 15f; // µØĞÎÆğ·ü¸ß¶È
+    public float radius = 500f; // çƒä½“åŠå¾„
+    [Range(5, 25)] public float height = 15f; // åœ°å½¢èµ·ä¼é«˜åº¦
 
-    [Header("ÔëÉù²ÎÊı£¨¿ØÖÆµØĞÎĞÎ×´£©")]
+    [Header("å™ªå£°å‚æ•°ï¼ˆæ§åˆ¶åœ°å½¢å½¢çŠ¶ï¼‰")]
     public float noiseScale = 0.08f;
     [Range(1, 4)] public int octaves = 2;
     [Range(0.1f, 2f)] public float persistence = 0.5f;
 
-    [Header("Ö²±»ÉèÖÃ")]
+    [Header("æ¤è¢«è®¾ç½®")]
     public GameObject grassPrefab;
     public GameObject treePrefab;
     [Range(1000, 8000)] public int grassAmount = 3000;
     [Range(100, 400)] public int treeAmount = 150;
 
-  //³õÊ¼×ø±ê
+  //åˆå§‹åæ ‡
     public bool initializePosition = true;
 
     private Mesh sphereMesh;
@@ -28,7 +28,7 @@ public class SphereTerrainComplete : MonoBehaviour
     private int[] triangles;
     private bool isGenerated = false;
 
-    //×Ô¶¯Ë¢ĞÂ
+    //è‡ªåŠ¨åˆ·æ–°
     void OnValidate()
     {
         if (!Application.isPlaying)
@@ -41,16 +41,16 @@ public class SphereTerrainComplete : MonoBehaviour
         GenerateSphere();
     }
 
-    [ContextMenu("Éú³ÉÍêÕûÇòÌå")]
+    [ContextMenu("ç”Ÿæˆå®Œæ•´çƒä½“")]
     public void GenerateSphere()
     {
-        // ³õÊ¼»¯×ø±ê(0,0,0)
+        // åˆå§‹åŒ–åæ ‡(0,0,0)
         if (initializePosition)
         {
             transform.position = Vector3.zero;
         }
 
-        // ³õÊ¼»¯Íø¸ñ
+        // åˆå§‹åŒ–ç½‘æ ¼
         if (sphereMesh == null)
         {
             sphereMesh = new Mesh();
@@ -62,28 +62,28 @@ public class SphereTerrainComplete : MonoBehaviour
             sphereMesh.Clear(); 
         }
 
-        // ¶¥µãÊı×é
+        // é¡¶ç‚¹æ•°ç»„
         vertices = new Vector3[(resolution + 1) * resolution];
-        // Èı½ÇĞÎÊı×é
+        // ä¸‰è§’å½¢æ•°ç»„
         triangles = new int[resolution * resolution * 6];
 
         int triIndex = 0;
 
-        // Éú³É¶¥µãÓëÈı½ÇĞÎ
+        // ç”Ÿæˆé¡¶ç‚¹ä¸ä¸‰è§’å½¢
         for (int y = 0; y <= resolution; y++)
         {
             for (int x = 0; x < resolution; x++)
             {
-                // 1. ¼ÆËã¶¥µã×ø±ê
+                // 1. è®¡ç®—é¡¶ç‚¹åæ ‡
                 float lat = Mathf.Lerp(-Mathf.PI / 2, Mathf.PI / 2, y / (float)resolution);
                 float lon = Mathf.Lerp(0, 2 * Mathf.PI, x / (float)(resolution - 1));
 
-                // ÇòÃæ×ø±ê
+                // çƒé¢åæ ‡
                 float xPos = Mathf.Cos(lat) * Mathf.Cos(lon);
                 float yPos = Mathf.Sin(lat);
                 float zPos = Mathf.Cos(lat) * Mathf.Sin(lon);
 
-                //É½Çğ
+                //å±±ä¸˜
                 float noise = 0;
                 float freq = 1;
                 float amp = 1;
@@ -95,15 +95,15 @@ public class SphereTerrainComplete : MonoBehaviour
                     amp *= persistence;
                     freq *= 2;
                 }
-                float heightOffset = (noise - 0.5f) * height; // ¸ß¶ÈÆ«ÒÆ
+                float heightOffset = (noise - 0.5f) * height; // é«˜åº¦åç§»
 
-                // ×îÖÕ¶¥µãÎ»ÖÃ
+                // æœ€ç»ˆé¡¶ç‚¹ä½ç½®
                 vertices[y * resolution + x] = new Vector3(xPos, yPos, zPos) * (radius + heightOffset);
 
-                // 2. Éú³ÉÈı½ÇĞÎ
+                // 2. ç”Ÿæˆä¸‰è§’å½¢
                 if (y < resolution)
                 {
-                    // ËÄ¸ö¶¥µãË÷Òı
+                    // å››ä¸ªé¡¶ç‚¹ç´¢å¼•
                     int v0 = y * resolution + x;
                     int v1 = y * resolution + (x + 1) % resolution; 
                     int v2 = (y + 1) * resolution + x;
@@ -133,31 +133,31 @@ public class SphereTerrainComplete : MonoBehaviour
             }
         }
 
-        // Ó¦ÓÃÍø¸ñÊı¾İ
+        // åº”ç”¨ç½‘æ ¼æ•°æ®
         sphereMesh.vertices = vertices;
         sphereMesh.triangles = triangles;
         sphereMesh.RecalculateNormals();
         sphereMesh.RecalculateBounds();
         sphereMesh.Optimize();
 
-        // Åö×²Ìå
+        // ç¢°æ’ä½“
         GetComponent<MeshCollider>().sharedMesh = sphereMesh;
 
         isGenerated = true;
-        Debug.Log("ÍêÕûÇòÌåÉú³ÉÍê³É£¬ÖĞĞÄ×ø±êÒÑ³õÊ¼»¯µ½(0,0,0)");
+        Debug.Log("å®Œæ•´çƒä½“ç”Ÿæˆå®Œæˆï¼Œä¸­å¿ƒåæ ‡å·²åˆå§‹åŒ–åˆ°(0,0,0)");
     }
 
-    // Éú³ÉÖ²±»
-    [ContextMenu("Éú³ÉÖ²±»")]
+    // ç”Ÿæˆæ¤è¢«
+    [ContextMenu("ç”Ÿæˆæ¤è¢«")]
     public void GenerateVegetation()
     {
         if (!isGenerated)
         {
-            Debug.LogWarning("ÇëÏÈµã»÷¡¸Éú³ÉÍêÕûÇòÌå¡¹");
+            Debug.LogWarning("è¯·å…ˆç‚¹å‡»ã€Œç”Ÿæˆå®Œæ•´çƒä½“ã€");
             return;
         }
 
-        // Çå³ı¾ÉÖ²±»
+        // æ¸…é™¤æ—§æ¤è¢«
         foreach (Transform child in transform)
         {
             if (child.name.StartsWith("Grass") || child.name.StartsWith("Tree"))
@@ -166,7 +166,7 @@ public class SphereTerrainComplete : MonoBehaviour
             }
         }
 
-        // Éú³É²İ
+        // ç”Ÿæˆè‰
         if (grassPrefab != null)
         {
             for (int i = 0; i < grassAmount; i++)
@@ -185,7 +185,7 @@ public class SphereTerrainComplete : MonoBehaviour
             }
         }
 
-        // Éú³ÉÊ÷
+        // ç”Ÿæˆæ ‘
         if (treePrefab != null)
         {
             for (int i = 0; i < treeAmount; i++)
@@ -205,23 +205,23 @@ public class SphereTerrainComplete : MonoBehaviour
         }
     }
 
-    // ±à¼­Ä£Ê½»æÖÆ¸¨ÖúÏß
+    // ç¼–è¾‘æ¨¡å¼ç»˜åˆ¶è¾…åŠ©çº¿
     void OnDrawGizmos()
     {
         if (vertices == null) return;
 
-        // »æÖÆ¶¥µã
+        // ç»˜åˆ¶é¡¶ç‚¹
         Gizmos.color = new Color(0.3f, 0.8f, 1f, 0.6f);
         foreach (var v in vertices)
         {
             Gizmos.DrawSphere(transform.position + v, 0.15f);
         }
 
-        // »æÖÆÇòÌåÂÖÀª
+        // ç»˜åˆ¶çƒä½“è½®å»“
         Gizmos.color = new Color(1f, 0.9f, 0.2f, 0.4f);
         Gizmos.DrawWireSphere(transform.position, radius + height);
 
-        // »æÖÆ×ø±êÔ­µã
+        // ç»˜åˆ¶åæ ‡åŸç‚¹
         if (initializePosition)
         {
             Gizmos.color = Color.red;
