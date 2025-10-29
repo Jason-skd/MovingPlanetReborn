@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 9ce6465e6c046ad43bad8540305dfac3
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - onesensor: {fileID: 8317752819780024795, guid: 909a42cb9680f9c41989b7893c1a95bf, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
