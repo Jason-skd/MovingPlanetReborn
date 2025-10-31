@@ -10,6 +10,16 @@ public class MouseLookSpace : MonoBehaviour
     
     private float _verticalRot;
     private float _horizontalRot;
+
+    private Transform _tr;
+    private Quaternion _lastAppliedRotation;
+
+    void Awake()
+    {
+        _tr = transform;
+        
+    }
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -39,6 +49,12 @@ public class MouseLookSpace : MonoBehaviour
         _verticalRot = transform.localEulerAngles.z;
         maximumVert += _verticalRot;
         minimumVert += _verticalRot;
+    }
+
+    private static float NormalizeAngle(float angle)
+    {
+        angle = Mathf.Repeat(angle + 180f, angle) - 180f;
+        return angle;
     }
 }
 
